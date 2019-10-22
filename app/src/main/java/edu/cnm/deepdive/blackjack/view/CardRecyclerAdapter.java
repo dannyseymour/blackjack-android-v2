@@ -1,5 +1,6 @@
 package edu.cnm.deepdive.blackjack.view;
 
+
 import android.content.Context;
 import android.graphics.Rect;
 import android.view.LayoutInflater;
@@ -16,7 +17,7 @@ import edu.cnm.deepdive.blackjack.service.DeckOfCardsService;
 import edu.cnm.deepdive.blackjack.view.CardRecyclerAdapter.CardHolder;
 import java.util.List;
 
-public class CardRecyclerAdapter extends RecyclerView.Adapter<CardHolder>{
+public class CardRecyclerAdapter extends RecyclerView.Adapter<CardHolder> {
 
   private final Context context;
   private final List<Card> cards;
@@ -25,7 +26,6 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardHolder>{
     this.context = context;
     this.cards = cards;
   }
-
 
   @NonNull
   @Override
@@ -44,24 +44,30 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardHolder>{
     return cards.size();
   }
 
-  class CardHolder extends RecyclerView.ViewHolder{
-      private final ImageView imageView;
-    public CardHolder(@NonNull View itemView) {
+  class CardHolder extends RecyclerView.ViewHolder {
+
+    private final ImageView imageView;
+
+    private CardHolder(@NonNull View itemView) {
       super(itemView);
       imageView = (ImageView) itemView;
     }
-    private void bind(Card card){
-      DeckOfCardsService service = DeckOfCardsService.getInstance();
-      imageView.setContentDescription(context.getString(R.string.card_content_description, card.getRank(),card.getSuit()));
-      Picasso.get().load(service.getImageUrl(card).toString()).into(imageView);
+
+    private void bind(Card card) {
+      imageView.setContentDescription(
+          context.getString(R.string.card_content_description, card.getRank(), card.getSuit()));
+      Picasso.get().load(DeckOfCardsService.getImageUrl(card).toString()).into(imageView);
     }
+
   }
-  public static class OverlapDecoration extends RecyclerView.ItemDecoration{
+
+  public static class OverlapDecoration extends RecyclerView.ItemDecoration {
+
     private final int verticalOffset;
     private final int horizontalOffset;
 
-    public OverlapDecoration(){
-      this(0,0);
+    public OverlapDecoration() {
+      this(0, 0);
     }
 
     public OverlapDecoration(int verticalOffset, int horizontalOffset) {
@@ -73,10 +79,10 @@ public class CardRecyclerAdapter extends RecyclerView.Adapter<CardHolder>{
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
         @NonNull RecyclerView parent, @NonNull State state) {
       final int itemPosition = parent.getChildAdapterPosition(view);
-      if(itemPosition ==0){
+      if (itemPosition == 0) {
         super.getItemOffsets(outRect, view, parent, state);
-      }else{
-        outRect.set(horizontalOffset*itemPosition, verticalOffset, 0, 0);
+      } else {
+        outRect.set(horizontalOffset, verticalOffset, 0, 0);
       }
     }
   }
